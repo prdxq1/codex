@@ -5,3 +5,10 @@ __pycache__/
 /test_output/out_isWrite.png
 /test_output/tmp_ctor.png
 /test_output/roundtrip.png
+
+# Visual Studio local settings and build state
+.vs/
+*.vcxproj.user
+*.suo
+*.VC.db
+*.VC.opendb

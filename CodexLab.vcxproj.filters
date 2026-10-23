@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы"><UniqueIdentifier>{7b39fbd1-84df-5472-b4d5-79fac3009cc1}</UniqueIdentifier></Filter>
+    <Filter Include="Заголовочные файлы"><UniqueIdentifier>{6b52f0ba-e823-5312-9e75-61645e05dd8d}</UniqueIdentifier></Filter>
+    <Filter Include="Документация"><UniqueIdentifier>{c43672cf-1670-5684-a210-03e6fc429323}</UniqueIdentifier></Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Image.cpp"><Filter>Исходные файлы</Filter></ClCompile>
+    <ClCompile Include="src\Filters.cpp"><Filter>Исходные файлы</Filter></ClCompile>
+    <ClCompile Include="src\Source.cpp"><Filter>Исходные файлы</Filter></ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Image.h"><Filter>Заголовочные файлы</Filter></ClInclude>
+    <ClInclude Include="include\Filters.h"><Filter>Заголовочные файлы</Filter></ClInclude>
+    <ClInclude Include="include\stb_image.h"><Filter>Заголовочные файлы</Filter></ClInclude>
+    <ClInclude Include="include\stb_image_write.h"><Filter>Заголовочные файлы</Filter></ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md"><Filter>Документация</Filter></None>
+    <None Include="report\Лабораторная работа.pdf"><Filter>Документация</Filter></None>
+    <None Include="report\Podgotovka_k_zashchite_Dutov_RV.pdf"><Filter>Документация</Filter></None>
+  </ItemGroup>
+</Project>

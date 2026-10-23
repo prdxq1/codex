@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы"><UniqueIdentifier>{97e130ba-a9d5-5999-a094-e4b1b596b47a}</UniqueIdentifier></Filter>
+    <Filter Include="Заголовочные файлы"><UniqueIdentifier>{f78eba8c-9922-5e90-9ce6-21cdf7de5246}</UniqueIdentifier></Filter>
+    <Filter Include="Документация"><UniqueIdentifier>{2f14b0ba-a768-5f9e-a7c7-932cff39bc96}</UniqueIdentifier></Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Image.cpp"><Filter>Исходные файлы</Filter></ClCompile>
+    <ClCompile Include="src\Filters.cpp"><Filter>Исходные файлы</Filter></ClCompile>
+    <ClCompile Include="tests\tests_image.cpp"><Filter>Исходные файлы</Filter></ClCompile>
+    <ClCompile Include="tests\tests_filters.cpp"><Filter>Исходные файлы</Filter></ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Image.h"><Filter>Заголовочные файлы</Filter></ClInclude>
+    <ClInclude Include="include\Filters.h"><Filter>Заголовочные файлы</Filter></ClInclude>
+    <ClInclude Include="include\stb_image.h"><Filter>Заголовочные файлы</Filter></ClInclude>
+    <ClInclude Include="include\stb_image_write.h"><Filter>Заголовочные файлы</Filter></ClInclude>
+    <ClInclude Include="include\doctest.h"><Filter>Заголовочные файлы</Filter></ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
