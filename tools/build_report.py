@@ -11,8 +11,17 @@ from docx.oxml.ns import qn
 from docx.shared import Pt
 
 ROOT=Path(__file__).resolve().parents[1]
-a=argparse.ArgumentParser();a.add_argument('--name',default='Ф. И. О.');a.add_argument('--group',default='');a.add_argument('--pages');args=a.parse_args()
+a=argparse.ArgumentParser();a.add_argument('--name',default='Дутов Р. В.');a.add_argument('--group',default='');a.add_argument('--pages');args=a.parse_args()
 d=Document(ROOT/'tools/report_template.docx')
+# Переписанные пояснения заменяют текст, но сохраняют оформление абзацев.
+content=json.loads((ROOT/'tools/report_text.json').read_text())
+for index,text in content.items():
+ p=d.paragraphs[int(index)]
+ style=deepcopy(p.runs[0]._r.rPr) if p.runs and p.runs[0]._r.rPr is not None else None
+ p.clear()
+ run=p.add_run(text)
+ if style is not None:run._r.insert(0,style)
+
 # Оглавление образца содержит устаревшие разделы; сохраняем его стили,
 # отступы и заполнитель, заменяя состав и номера страниц.
 toc_titles=['1. Постановка задачи','2. Математическое описание алгоритма','2.1. Алгоритмы выделения контуров','2.2. Линейные усредняющие фильтры','3. Программное описание алгоритма','4. Результат работы программы','5. Заключение','Приложение А','Приложение Б']

@@ -12,12 +12,17 @@
 Image generateScene() {
     Image image(256, 256, 1);
     for (int y = 0; y < 256; ++y) for (int x = 0; x < 256; ++x) {
-        int value = 50;
-        if (x >= 64 && x <= 192 && y >= 64 && y <= 192) value = 200;
-        if ((x-50)*(x-50)+(y-50)*(y-50) <= 900) value = 150;
-        // Градиент и тонкие полосы дополняют тест резких границ и плоского фона.
-        if (y >= 218 && x >= 20 && x < 236) value = 30 + (x-20)*190/215;
-        if (y >= 100 && y < 190 && x >= 210 && x < 240) value = ((x-210)/3)%2 ? 220 : 30;
+        // Светлый фон и четыре раздельные фигуры, без сцены из образца.
+        int value = 195;
+        // Равнобедренный треугольник: вершина (60,25), основание y=100.
+        if (y >= 25 && y <= 100 && std::abs(x-60)*75 <= (y-25)*40) value = 55;
+        // Ромб с центром (183,62).
+        if (std::abs(x-183)+std::abs(y-62) <= 38) value = 125;
+        // Эллипс с полуосями 42 и 27.
+        if ((x-66)*(x-66)/1764.0+(y-174)*(y-174)/729.0 <= 1.0) value = 105;
+        // Крест из двух прямоугольников одинаковой толщины.
+        if ((x >= 174 && x <= 190 && y >= 139 && y <= 217) ||
+            (x >= 147 && x <= 217 && y >= 170 && y <= 186)) value = 40;
         image.setColor(x, y, value, value, value);
     }
     return image;
@@ -41,7 +46,7 @@ void metrics(std::ostream& out, const std::string& name, const Image& image, con
     for(int y=0;y<256;++y) for(int x=0;x<256;++x) {
         int r=0,g=0,b=0,c=0; image.getColor(x,y,r,g,b); clean.getColor(x,y,c,g,b);
         double e=r-c; square+=e*e;
-        if(x>=5 && x<45 && y>=100 && y<200) { flat+=e*e; ++count; }
+        if(x>=5 && x<25 && y>=110 && y<230) { flat+=e*e; ++count; }
     }
     double mse=square/65536;
     out << name << ',' << mse << ',' << 10*std::log10(255.0*255/mse) << ',' << flat/count << '\n';
