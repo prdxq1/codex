@@ -1,0 +1,7 @@
+/bin/
+/build/
+__pycache__/
+/test_output/*test*.png
+/test_output/out_isWrite.png
+/test_output/tmp_ctor.png
+/test_output/roundtrip.png
