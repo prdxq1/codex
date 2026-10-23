@@ -1,0 +1,8 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="Win32" />
+  </Configurations>
+  <Project Path="CodexLab.vcxproj" />
+  <Project Path="CodexLabTests.vcxproj" />
+</Solution>
