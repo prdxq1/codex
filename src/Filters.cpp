@@ -221,4 +221,44 @@ namespace Filters {
     }
 
 
+    // Вариант 3. Каждый канал обрабатывается независимо.
+    static Image rankFilter(const Image& src, int kernelSize, int mode) {
+        if (kernelSize <= 0 || kernelSize % 2 == 0 || kernelSize > 255)
+            throw std::invalid_argument("Odd kernel size 1..255 required");
+        Image dst(src.width(), src.height(), src.nChannels());
+        int radius = kernelSize / 2;
+        std::vector<int> values;
+        values.reserve(kernelSize * kernelSize);
+        for (int y = 0; y < src.height(); ++y) {
+            for (int x = 0; x < src.width(); ++x) {
+                int color[3] = {0, 0, 0};
+                int channels = src.nChannels() <= 2 ? 1 : 3;
+                for (int c = 0; c < channels; ++c) {
+                    values.clear();
+                    for (int ky = -radius; ky <= radius; ++ky)
+                        for (int kx = -radius; kx <= radius; ++kx)
+                            values.push_back(getPixelChannel(src, x+kx, y+ky, c));
+                    if (mode < 0) color[c] = *std::min_element(values.begin(), values.end());
+                    else if (mode > 0) color[c] = *std::max_element(values.begin(), values.end());
+                    else {
+                        auto middle = values.begin() + values.size()/2;
+                        std::nth_element(values.begin(), middle, values.end());
+                        color[c] = *middle;
+                    }
+                }
+                dst.setColor(x, y, color[0], color[1], color[2]);
+            }
+        }
+        return dst;
+    }
+    Image applyMedianFilter(const Image& src, int kernelSize) {
+        return rankFilter(src, kernelSize, 0);
+    }
+    Image applyMinFilter(const Image& src, int kernelSize) {
+        return rankFilter(src, kernelSize, -1);
+    }
+    Image applyMaxFilter(const Image& src, int kernelSize) {
+        return rankFilter(src, kernelSize, 1);
+    }
+
 } // namespace Filters

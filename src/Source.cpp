@@ -68,11 +68,21 @@ int main() {
         save(box3,"test_output/var2_box_blur_3x3.png");
         save(box5,"test_output/var2_box_blur_5x5.png");
         save(gaussian,"test_output/var2_gaussian_blur.png");
+        Image median3=Filters::applyMedianFilter(noisy,3);
+        Image median5=Filters::applyMedianFilter(noisy,5);
+        Image minimum=Filters::applyMinFilter(noisy,3);
+        Image maximum=Filters::applyMaxFilter(noisy,3);
+        save(median3,"test_output/var3_median_3x3.png");
+        save(median5,"test_output/var3_median_5x5.png");
+        save(minimum,"test_output/var3_min.png");
+        save(maximum,"test_output/var3_max.png");
         std::ofstream out("test_output/metrics.csv");
         if(!out) throw std::runtime_error("Cannot write metrics");
         out << "method,mse,psnr_db,flat_mse\n";
         metrics(out,"noisy",noisy,clean); metrics(out,"box3",box3,clean);
         metrics(out,"box5",box5,clean); metrics(out,"gaussian",gaussian,clean);
-        std::cout << "Generated 256x256 grayscale scene, Gaussian noise (sigma=25, seed=42), variants 1 and 2.\n";
+        metrics(out,"median3",median3,clean); metrics(out,"median5",median5,clean);
+        metrics(out,"minimum",minimum,clean); metrics(out,"maximum",maximum,clean);
+        std::cout << "Generated 256x256 grayscale scene, Gaussian noise (sigma=25, seed=42), variants 1, 2 and 3.\n";
     } catch(const std::exception& e) { std::cerr<<e.what()<<'\n'; return 1; }
 }

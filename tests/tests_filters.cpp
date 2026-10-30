@@ -38,3 +38,28 @@ TEST_CASE("Image deep assignment, empty image and channel validation") {
  CHECK(Filters::applySobel(Image()).width()==0);
  CHECK(Filters::applyBoxBlur(Image(),3).width()==0);
 }
+TEST_CASE("Rank filters: replicated corner and independent color channels") {
+ Image a(3,3,1);for(int y=0;y<3;++y)for(int x=0;x<3;++x)a.setColor(x,y,10+10*x+30*y,0,0);
+ CHECK(pixel(Filters::applyMedianFilter(a,3),0,0)==20);
+ CHECK(pixel(Filters::applyMinFilter(a,3),0,0)==10);
+ CHECK(pixel(Filters::applyMaxFilter(a,3),0,0)==50);
+ CHECK(pixel(Filters::applyMedianFilter(a,3),1,1)==50);
+ Image rgb(1,1,3);rgb.setColor(0,0,12,80,190);
+ for(auto b:{Filters::applyMedianFilter(rgb,5),Filters::applyMinFilter(rgb,3),Filters::applyMaxFilter(rgb,3)}){
+  int r=0,g=0,blue=0;b.getColor(0,0,r,g,blue);CHECK(r==12);CHECK(g==80);CHECK(blue==190);
+ }
+ CHECK_THROWS_AS(Filters::applyMedianFilter(a,2),std::invalid_argument);
+ CHECK_THROWS_AS(Filters::applyMinFilter(a,0),std::invalid_argument);
+ CHECK_THROWS_AS(Filters::applyMaxFilter(a,-1),std::invalid_argument);
+ CHECK(Filters::applyMedianFilter(Image(),3).width()==0);
+}
+TEST_CASE("Median suppresses isolated impulse while min and max select extremes") {
+ Image a(5,5,1);for(int y=0;y<5;++y)for(int x=0;x<5;++x)a.setColor(x,y,80,80,80);
+ a.setColor(2,2,255,255,255);
+ CHECK(pixel(Filters::applyMedianFilter(a,3),2,2)==80);
+ CHECK(pixel(Filters::applyMinFilter(a,3),2,2)==80);
+ CHECK(pixel(Filters::applyMaxFilter(a,3),2,2)==255);
+ a.setColor(2,2,0,0,0);
+ CHECK(pixel(Filters::applyMedianFilter(a,3),2,2)==80);
+ CHECK(pixel(Filters::applyMinFilter(a,3),2,2)==0);
+}

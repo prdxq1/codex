@@ -24,8 +24,8 @@ for index,text in content.items():
 
 # Оглавление образца содержит устаревшие разделы; сохраняем его стили,
 # отступы и заполнитель, заменяя состав и номера страниц.
-toc_titles=['1. Постановка задачи','2. Математическое описание алгоритма','2.1. Алгоритмы выделения контуров','2.2. Линейные усредняющие фильтры','3. Программное описание алгоритма','4. Результат работы программы','5. Заключение','Приложение А','Приложение Б']
-pages=json.loads(Path(args.pages).read_text()) if args.pages else [3,4,4,8,10,11,15,16,19]
+toc_titles=['1. Постановка задачи','2. Математическое описание алгоритма','2.1. Алгоритмы выделения контуров','2.2. Линейные усредняющие фильтры','2.3. Порядковые фильтры','3. Программное описание алгоритма','4. Результат работы программы','5. Заключение','Приложение А','Приложение Б','Приложение В']
+pages=json.loads(Path(args.pages).read_text()) if args.pages else [3,4,4,8,10,11,12,16,17,20,23]
 for sdt in list(d._element.body):
  if sdt.tag!=qn('w:sdt'):continue
  content=sdt.find(qn('w:sdtContent'))
@@ -52,8 +52,8 @@ metrics={r['method']:r for r in rows}
 for p in d.paragraphs:
  if '{{METRICS}}' in p.text:
   text='Результаты измерений относительно чистого оригинала (MSE; PSNR, дБ; MSE на однородном фоне): '
-  labels={'noisy':'шум','box3':'окно 3×3','box5':'окно 5×5','gaussian':'Гаусс 5×5, σ=1,5'}
-  text+='; '.join(f"{labels[r['method']]} — {float(r['mse']):.2f}; {float(r['psnr_db']):.2f}; {float(r['flat_mse']):.2f}" for r in rows)+'.'
+  labels={'median3':'медиана 3×3','median5':'медиана 5×5','minimum':'минимум','maximum':'максимум','noisy':'шум','box3':'окно 3×3','box5':'окно 5×5','gaussian':'Гаусс 5×5, σ=1,5'}
+  text+='; '.join(f"{labels[r['method']]} — {float(r['mse']):.2f}; {float(r['psnr_db']):.2f}; {float(r['flat_mse']):.2f}" for r in rows if r['method'] in ['noisy','box3','box5','gaussian'])+'.'
   p.runs[0].text=text
   for r in p.runs[1:]:r.text=''
 images=['test_input/input.png','test_output/var1_laplacian.png','test_output/var1_roberts.png','test_output/var1_sobel.png','test_output/var2_box_blur_3x3.png','test_output/var2_box_blur_5x5.png','test_output/var2_gaussian_blur.png']
@@ -64,8 +64,10 @@ for shape,path in zip(d.inline_shapes,images):
 used={b.get(qn('r:embed')) for b in d._element.xpath('.//a:blip')}
 for rid,rel in list(d.part.rels.items()):
  if rel.reltype.endswith('/image') and rid not in used:d.part.drop_rel(rid)
+from report_rank import extend
+extend(d,ROOT)
 d.core_properties.author=args.name if '_' not in args.name else ''
 d.core_properties.last_modified_by=d.core_properties.author
-d.core_properties.title='Цифровая обработка изображений. Варианты 1 и 2'
+d.core_properties.title='Цифровая обработка изображений. Варианты 1, 2 и 3'
 d.save(ROOT/'report/Лабораторная работа.docx')
 print('Saved report/Лабораторная работа.docx')

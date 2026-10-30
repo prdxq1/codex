@@ -43,4 +43,8 @@ namespace Filters {
 
 
 
+// Вариант 3: ранговые фильтры с репликацией границ.
+    Image applyMedianFilter(const Image& src, int kernelSize = 3);
+    Image applyMinFilter(const Image& src, int kernelSize = 3);
+    Image applyMaxFilter(const Image& src, int kernelSize = 3);
 } // namespace Filters
